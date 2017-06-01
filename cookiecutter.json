@@ -1,0 +1,11 @@
+{
+    "project_name": "TestRepo",
+    "package_name": "TestPackage",
+    "namespace": "No namespace",
+    "api_version": "39.0",
+    "extends": [
+        "Standalone Package",
+        "HEDA",
+        "NPSP"
+    ]
+}
