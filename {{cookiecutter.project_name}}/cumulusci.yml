@@ -3,5 +3,5 @@ project:
         name: {{cookiecutter.package_name}}{% if cookiecutter.namespace != 'No namespace' %}
         namespace: {{cookiecutter.namespace}}{% endif %}
         api_version: {{cookiecutter.api_version}}
-{% if cookiecutter.extends != 'Standalone Package' %}    dependencies:
+{% if cookiecutter.extends != 'Standalone' %}    dependencies:
         - github: https://github.com/SalesforceFoundation/{% if cookiecutter.extends == 'HEDA' %}HEDAP{% elif cookiecutter.extends == 'NPSP' %}Cumulus{% endif %}{% endif %}

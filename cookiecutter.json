@@ -4,7 +4,7 @@
     "namespace": "No namespace",
     "api_version": "39.0",
     "extends": [
-        "Standalone Package",
+        "Standalone",
         "HEDA",
         "NPSP"
     ]
