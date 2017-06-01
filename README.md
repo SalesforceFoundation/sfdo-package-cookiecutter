@@ -10,9 +10,11 @@ This template allows you to easily initialize a CumulusCI project for the follow
 # Starting a Project
 
 **You need cookiecutter installed which can be done with:**
+
 `pip install cookiecutter`
 
 **Create your project from the template:**
+
 `cookiecutter https://github.com/SalesforceFoundation/sfdo-package-cookiecutter`
 
 **Create an empty repository in Github and then run the following commands**
