@@ -41,3 +41,17 @@ Installs all dependencies and the latest beta release
 `cci flow run install_prod`
 Installs all dependencies and the latest production release
 
+# Using Scratch Orgs via Salesforce DX
+
+This repository is configured to allow easy use of Scratch Orgs if you have access to Salesforce DX, have the `sfdx` CLI command available, and have authorized and set a `defaultdevhubusername`.  With these prerequisites in place (refer to Salesforce DX documentation), you can work with scratch orgs with the following commands:
+
+`cci org scratch dev dev_scratch --default`
+Creates a scratch org using the `dev` configuration from `orgs/dev.json` and names the org `dev_scratch` in the `cci` keychain.  The `--default` flag makes the newly created org the default org for future commands
+
+**NOTE**: If your scratch org gets deleted by the platform, you can rerun the above command to refresh the entry in the `cci` keychain so you can recreate the org.
+
+`cci org info dev_scratch`
+Triggers the creation of the actual scratch org instance and returns information about the org including the username and password.  Once the org is created the first time it will persist in your `cci` keychain until it is deleted with `cci org scratch_delete dev_scratch` or it is automatically deleted by the platform.
+
+`cci org browser dev_scratch`
+Opens a browser and logs into the `dev_scratch` org.

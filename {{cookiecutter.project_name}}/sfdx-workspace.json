@@ -1,0 +1,10 @@
+{
+  "PackageDirectories": [
+    {
+      "Path": "src"
+    }
+  ],
+  "Namespace": "{{cookiecutter.namespace}}",
+  "SfdcLoginUrl": "https://login.salesforce.com",
+  "SourceApiVersion": "{{cookiecutter.api_version}}"
+}

@@ -1,0 +1,11 @@
+{
+  "Company": "{{cookiecutter.package_name}} - Release Test Org",
+  "Country": "US",
+  "LastName": "Developer",
+  "Email": "{{cookiecutter.scratch_org_email}}",
+  "Edition": "Enterprise",
+  "OrgPreferences" : {
+    "S1DesktopEnabled" : true,
+    "ChatterEnabled" : true
+  }
+}
