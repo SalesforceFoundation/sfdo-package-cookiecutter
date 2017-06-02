@@ -61,7 +61,7 @@ project:
 $ cookiecutter https://github.com/SalesforceFoundation/sfdo-package-cookiecutter
 project_name [TestRepo]: 
 package_name [TestPackage]: 
-namespace [No namespace]: testnamespace
+namespace [No namespace]:
 api_version [39.0]: 
 Select extends:
 1 - Standalone Package
@@ -75,7 +75,6 @@ $ cat TestRepo/cumulusci.yml
 project:
     package:
         name: TestPackage
-        namespace: testnamespace
         api_version: 39.0
     dependencies:
         - github: https://github.com/SalesforceFoundation/HEDAP
