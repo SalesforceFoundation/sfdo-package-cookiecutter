@@ -35,6 +35,7 @@ project_name [TestRepo]:
 package_name [TestPackage]: 
 namespace [No namespace]: testnamespace
 api_version [39.0]: 
+scratch_org_email [enter_a@valid_email_here]: test@mailinator.com
 Select extends:
 1 - Standalone Package
 2 - HEDA
@@ -42,7 +43,7 @@ Select extends:
 Choose from 1, 2, 3 [1]: 2
 
 $ ls TestRepo/
-cumulusci.yml  src/           
+PULL_REQUEST_TEMPLATE README.md cumulusci.yml  orgs/ src/ 
 $ cat TestRepo/cumulusci.yml 
 project:
     package:
@@ -63,6 +64,7 @@ project_name [TestRepo]:
 package_name [TestPackage]: 
 namespace [No namespace]:
 api_version [39.0]: 
+scratch_org_email [enter_a@valid_email_here]: test@mailinator.com
 Select extends:
 1 - Standalone Package
 2 - HEDA
