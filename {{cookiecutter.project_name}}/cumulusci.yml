@@ -83,14 +83,14 @@ project:
         description: 'Loads test test data from testdata/testdata.db into the target org'
         class_path: cumulusci.tasks.bulkdata.LoadData
         options:
-            database_url: 'sqlite:///testdata/testdata.db'
+            database_url: 'sqlite:///datasets/testdata.db'
             mapping: 'datasets/testdata.yml'
 
     testdata_query:
         description: Queries all objects in the mapping file and populates values to the local database
         class_path: cumulusci.tasks.bulkdata.QueryData
         options:
-            database_url: 'sqlite:///testdata/testdata.db'
+            database_url: 'sqlite:///datasets/testdata.db'
             mapping: 'datasets/testdata.yml'
     {% endif %}
 {% if cookiecutter.extends != 'Standalone' %}flows:
