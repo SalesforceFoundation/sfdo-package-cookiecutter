@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+{% if cookiecutter.extends == 'NPSP' %}    <types>
+        <members>Opportunity.Donation</members>
+        <members>Opportunity.Grant</members>
+        <members>Opportunity.In-Kind Gift</members>
+        <members>Opportunity.Major Gift</members>
+        <name>BusinessProcess</name>
+    </types>
+    <types>
+        <members>Opportunity.Donation</members>
+        <name>CompactLayout</name>
+    </types>
+    <types>
+        <members>Opportunity.Donation</members>
+        <members>Opportunity.Grant</members>
+        <members>Opportunity.In_Kind_Gift</members>
+        <members>Opportunity.MajorGift</members>
+        <members>Opportunity.Matching_Gift</members>
+        <members>Opportunity.Membership</members>
+        <name>RecordType</name>
+    </types>
+{% endif %}    <version>{{cookiecutter.api_version}}</version>
+</Package>

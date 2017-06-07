@@ -1,7 +1,121 @@
 project:
     package:
-        name: {{cookiecutter.package_name}}{% if cookiecutter.namespace != 'No namespace' %}
-        namespace: {{cookiecutter.namespace}}{% endif %}
+        name: {{cookiecutter.package_name}}
         api_version: {{cookiecutter.api_version}}
-{% if cookiecutter.extends != 'Standalone' %}    dependencies:
-        - github: https://github.com/SalesforceFoundation/{% if cookiecutter.extends == 'HEDA' %}HEDAP{% elif cookiecutter.extends == 'NPSP' %}Cumulus{% endif %}{% endif %}
+    dependencies:
+        {% if cookiecutter.extends == 'NPSP' %}# Latest Managed NPSP release and all its dependencies (including npe01, npo02, npe03, npe4, npe5)
+        - github: https://github.com/SalesforceFoundation/Cumulus
+          skip:
+            - unpackaged/pre/opportunity_record_types
+          #unmanaged: True  # Uncomment for unmanaged NPSP deployment
+        # Unmanaged Opportunity RecordTypes from the NPSP Trial template
+        - zip_url: https://github.com/SalesforceFoundation/CumulusReports/archive/master.zip
+          subfolder: CumulusReports-master/record_types
+        # Unmanaged NPSP Reports & Dashboards and all its dependencies
+        - github: https://github.com/SalesforceFoundation/CumulusReports
+          #namespace_strip: npsp  # Uncomment for unmanaged NPSP deployment
+        # Latest Managed Volunteers for Salesforce release and all its dependencies
+        - github: https://github.com/SalesforceFoundation/Volunteers-for-Salesforce
+        # Latest Managed Campaign Tools release and all its dependencies
+        - github: https://github.com/SalesforceFoundation/CampaignTools
+        {% elif cookiecutter.extends == 'HEDA' %}# Latest Managed HEDA release and its dependencies
+        - github: https://github.com/SalesforceFoundation/HEDAP
+          #unmanaged: True  # Uncomment for unmanaged HEDA deployment
+        {% endif %}
+{% if cookiecutter.extends != 'Standalone' %}tasks:
+    {% if cookiecutter.extends == 'NPSP' %}clean_pre_dependencies:
+        description: Modifies the retrieved pre_dependencies metadata to prepare for deployment
+        class_path: cumulusci.tasks.metadata.modify.RemoveElementsXPath
+        options:
+            chdir: pre_dependencies
+            elements:
+                - path: objects/Opportunity.object
+                  xpath: '/ns:recordTypes/ns:compactLayoutAssignment'
+    clean_src:
+        description: Cleans the src directory after retrieve_src
+        class_path: cumulusci.tasks.metadata.modify.RemoveElementsXPath
+        options:
+            chdir: src
+            elements:
+                - path: quickActions/SendEmail.quickAction
+                  xpath: '/ns:quickActionLayout/ns:quickActionLayoutColumns/ns:quickActionLayoutItems[ns:field="EmailTemplateId"]'
+    {% endif %}deploy_pre_dependencies:
+        description: Deploys the pre_dependencies metadata
+        class_path: cumulusci.tasks.salesforce.Deploy
+        options:
+            path: pre_dependencies
+
+    deploy_unpackageable:
+        description: Deploys the unpackageable metadata
+        class_path: cumulusci.tasks.salesforce.Deploy
+        options:
+            path: unpackageable
+
+    retrieve_pre_dependencies:
+        description: Retrieves any metadata that needs to be deployed before dependencies are processed
+        class_path: cumulusci.tasks.salesforce.RetrieveUnpackaged
+        options:
+            package_xml: manifests/pre_dependencies.xml
+            path: pre_dependencies
+
+    retrieve_unpackageable:
+        description: Retrieves any unpackageable metadata from the customer org
+        class_path: cumulusci.tasks.salesforce.RetrieveUnpackaged
+        options:
+            package_xml: manifests/unpackageable.xml
+            path: unpackageable
+    {% endif %}{% if cookiecutter.extends == 'NPSP' %}testdata_delete:
+        description: 'WARNING: Deletes all data in the objects specified in the objects option.'
+        class_path: cumulusci.tasks.bulkdata.DeleteData
+        options:
+            objects:
+                - Opportunity
+                - npe03__Recurring_Donation__c
+                - Case
+                - Contact
+                - Account
+                - npsp__Allocation__c
+                - npsp__General_Accounting_Unit__c
+                - Campaign
+
+    testdata_load:
+        description: 'Loads test test data from testdata/testdata.db into the target org'
+        class_path: cumulusci.tasks.bulkdata.LoadData
+        options:
+            database_url: 'sqlite:///testdata/testdata.db'
+            mapping: 'datasets/testdata.yml'
+
+    testdata_query:
+        description: Queries all objects in the mapping file and populates values to the local database
+        class_path: cumulusci.tasks.bulkdata.QueryData
+        options:
+            database_url: 'sqlite:///testdata/testdata.db'
+            mapping: 'datasets/testdata.yml'
+    {% endif %}
+{% if cookiecutter.extends != 'Standalone' %}flows:
+
+    retrieve_prod:
+        description: Retrieves metadata and customizations from the customer production org
+        tasks:
+            1:
+                task: retrieve_unpackageable
+            2:
+                task: retrieve_pre_dependencies
+            3:
+                task: retrieve_src
+            {% if cookiecutter.extends == 'NPSP' %}4:
+                task: clean_pre_dependencies
+            5:
+                task: clean_src
+            6:
+                task: update_package_xml
+                options:
+                    path: pre_dependencies
+                    managed: False {% endif %}
+
+    dev_org:
+        tasks:
+            0.1:
+                task: deploy_unpackageable
+            0.2:
+                task: deploy_pre_dependencies{% endif %}
