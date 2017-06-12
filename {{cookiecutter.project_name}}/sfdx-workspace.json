@@ -4,7 +4,7 @@
       "Path": "src"
     }
   ],
-  "Namespace": "{% if namespace != 'No Namespace' %}{{cookiecutter.namespace}}{% endif %}",
+  "Namespace": "{% if cookiecutter.namespace != 'No Namespace' %}{{cookiecutter.namespace}}{% endif %}",
   "SfdcLoginUrl": "https://login.salesforce.com",
   "SourceApiVersion": "{{cookiecutter.api_version}}"
 }
