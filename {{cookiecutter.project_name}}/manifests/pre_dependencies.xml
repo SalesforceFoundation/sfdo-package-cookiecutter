@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
-{% if cookiecutter.extends == 'NPSP' %}    <types>
+{% if cookiecutter.project_type == 'NPSP: Org Customization' %}    <types>
         <members>Opportunity.Donation</members>
         <members>Opportunity.Grant</members>
         <members>Opportunity.In-Kind Gift</members>

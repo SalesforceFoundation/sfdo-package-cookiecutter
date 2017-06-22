@@ -1,4 +1,4 @@
-{% if cookiecutter.extends == 'NPSP' %}
+{% if cookiecutter.project_type == 'NPSP: Org Customization' %}
 Insert Accounts:
     sf_object: Account
     table: accounts

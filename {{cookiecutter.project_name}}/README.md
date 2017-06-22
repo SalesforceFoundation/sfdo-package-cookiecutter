@@ -7,10 +7,10 @@
 `src` holds unmanaged metadata
 {% endif %}
 
-{% if cookiecutter.extends != 'Standalone' %}
+{% if cookiecutter.project_type != 'Standalone' %}
 # Dependencies
 
-This project extends [{{cookiecutter.extends}}](https://github.com/SalesforceFoundation/{% if cookiecutter.extends == 'HEDA' %}HEDAP{% elif cookiecutter.extends == 'NPSP' %}Cumulus{% endif %}) and inherits the dependencies from its `cumulusci.yml` file
+This project extends [{{cookiecutter.project_type}}](https://github.com/SalesforceFoundation/{% if cookiecutter.project_type.startswith('HEDA:') %}HEDAP{% elif cookiecutter.project_type.startswith('NPSP:') %}Cumulus{% endif %}) and inherits the dependencies from its `cumulusci.yml` file
 {% endif %}
 
 

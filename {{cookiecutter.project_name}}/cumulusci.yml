@@ -1,15 +1,16 @@
 project:
     name: {{cookiecutter.project_name}}
     package:
-        name: {{cookiecutter.package_name}}
         api_version: {{cookiecutter.api_version}}
+        name: {{cookiecutter.package_name}}{% if cookiecutter.namespace %}
+        namespace: {{cookiecutter.namespace}}{% endif %}
     dependencies:
-        {% if cookiecutter.extends == 'NPSP' %}# Latest Managed NPSP release and all its dependencies (including npe01, npo02, npe03, npe4, npe5)
+        {% if cookiecutter.project_type.startswith('NPSP:') %}# Latest Managed NPSP release and all its dependencies (including npe01, npo02, npe03, npe4, npe5)
         - github: https://github.com/SalesforceFoundation/Cumulus
-          skip:
+          {% if cookiecutter.project_type == 'NPSP: Org Customization' %}skip:
             - unpackaged/pre/opportunity_record_types
-          #unmanaged: True  # Uncomment for unmanaged NPSP deployment
-        # Unmanaged Opportunity RecordTypes from the NPSP Trial template
+          {% endif %}#unmanaged: True  # Uncomment for unmanaged NPSP deployment
+        {% if cookiecutter.project_type == 'NPSP: Org Customization' %}# Unmanaged Opportunity RecordTypes from the NPSP Trial template
         - zip_url: https://github.com/SalesforceFoundation/CumulusReports/archive/master.zip
           subfolder: CumulusReports-master/record_types
         # Unmanaged NPSP Reports & Dashboards and all its dependencies
@@ -19,12 +20,13 @@ project:
         - github: https://github.com/SalesforceFoundation/Volunteers-for-Salesforce
         # Latest Managed Campaign Tools release and all its dependencies
         - github: https://github.com/SalesforceFoundation/CampaignTools
-        {% elif cookiecutter.extends == 'HEDA' %}# Latest Managed HEDA release and its dependencies
+        {% endif %}
+        {% elif cookiecutter.project_type.startswith('HEDA:') %}# Latest Managed HEDA release and its dependencies
         - github: https://github.com/SalesforceFoundation/HEDAP
           #unmanaged: True  # Uncomment for unmanaged HEDA deployment
         {% endif %}
-{% if cookiecutter.extends != 'Standalone' %}tasks:
-    {% if cookiecutter.extends == 'NPSP' %}clean_pre_dependencies:
+{% if cookiecutter.project_type.endswith('Org Customization') %}tasks:
+    {% if cookiecutter.project_type == 'NPSP: Org Customization' %}clean_pre_dependencies:
         description: Modifies the retrieved pre_dependencies metadata to prepare for deployment
         class_path: cumulusci.tasks.metadata.modify.RemoveElementsXPath
         options:
@@ -65,7 +67,7 @@ project:
         options:
             package_xml: manifests/unpackageable.xml
             path: unpackageable
-    {% endif %}{% if cookiecutter.extends == 'NPSP' %}testdata_delete:
+    {% endif %}{% if cookiecutter.project_type == 'NPSP: Org Customization' %}testdata_delete:
         description: 'WARNING: Deletes all data in the objects specified in the objects option.'
         class_path: cumulusci.tasks.bulkdata.DeleteData
         options:
@@ -93,7 +95,7 @@ project:
             database_url: 'sqlite:///datasets/testdata.db'
             mapping: 'datasets/testdata.yml'
     {% endif %}
-{% if cookiecutter.extends != 'Standalone' %}flows:
+{% if cookiecutter.project_type.endswith('Org Customization') %}flows:
 
     retrieve_prod:
         description: Retrieves metadata and customizations from the customer production org
@@ -104,7 +106,7 @@ project:
                 task: retrieve_pre_dependencies
             3:
                 task: retrieve_src
-            {% if cookiecutter.extends == 'NPSP' %}4:
+            {% if cookiecutter.project_type == 'NPSP: Org Customization' %}4:
                 task: clean_pre_dependencies
             5:
                 task: clean_src

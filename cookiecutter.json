@@ -1,12 +1,16 @@
 {
+    "project_type": [
+        "Standalone",
+        "HEDA: Managed Extension Package",
+        "HEDA: Org Customization",
+        "HEDA: Unmanaged Extension",
+        "NPSP: Managed Extension Package",
+        "NPSP: Org Customization",
+        "NPSP: Unmanaged Extension"
+    ],
     "project_name": "TestRepo",
     "package_name": "TestPackage",
     "namespace": "No namespace",
     "api_version": "39.0",
-    "scratch_org_email": "enter_a@valid_email_here",
-    "extends": [
-        "Standalone",
-        "HEDA",
-        "NPSP"
-    ]
+    "scratch_org_email": "enter_a@valid_email_here"
 }
