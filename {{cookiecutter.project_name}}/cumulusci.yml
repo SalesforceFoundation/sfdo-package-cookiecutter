@@ -2,7 +2,7 @@ project:
     name: {{cookiecutter.project_name}}
     package:
         api_version: {{cookiecutter.api_version}}
-        name: {{cookiecutter.package_name}}{% if cookiecutter.namespace %}
+        name: {{cookiecutter.package_name}}{% if cookiecutter.namespace != 'No namespace' %}
         namespace: {{cookiecutter.namespace}}{% endif %}
     dependencies:
         {% if cookiecutter.project_type.startswith('NPSP:') %}# Latest Managed NPSP release and all its dependencies (including npe01, npo02, npe03, npe4, npe5)
