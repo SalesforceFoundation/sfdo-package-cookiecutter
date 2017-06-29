@@ -1,0 +1,9 @@
+{
+  "packageDirectories": [
+    {
+      "path": "src"
+    }
+  ],
+  "namespace": "{% if cookiecutter.namespace != 'No Namespace' %}{{cookiecutter.namespace}}{% endif %}",
+  "sourceApiVersion": "{{cookiecutter.api_version}}"
+}
